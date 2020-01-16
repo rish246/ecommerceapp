@@ -55,13 +55,12 @@ const validate = {
 			}
 		}),
 
-	//validator to validate title, price, image of the product
-	requireTitle: check('title').trim().isLength({ min: 5, max: 40 }).withMessage('this field is required'),
-	requirePrice: check('price')
+	//validator to validate title, price of the product
+	requireTitle: check('title')
 		.trim()
-		.toFloat()
-		.isFloat({ min: 1 })
-		.withMessage('Please Enter a valid value for password')
+		.isLength({ min: 5, max: 40 })
+		.withMessage('The title should be between 5 and 40 characters'),
+	requirePrice: check('price').trim().toFloat().isFloat({ min: 1 }).withMessage('Invalid value for Price')
 };
 
 module.exports = validate;

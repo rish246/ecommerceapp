@@ -11,6 +11,7 @@ const {
 const usersRepo = require('../../../repositories/users');
 const signInForm = require('../../../views/admin/auth/signin');
 const signUpForm = require('../../../views/admin/auth/signup');
+const { handleErrors } = require('../../../views/admin/auth/middlewares');
 //creating a subRouter
 //use express to improve validation and handle errors
 const router = express.Router();
@@ -23,16 +24,11 @@ router.get('/signup', (req, res) => {
 
 router.post(
 	'/signup',
-	[ requireEmail, requirePassword, requirePasswordConfirmation, comparePasswords ], //validation process
+	[ requireEmail, requirePassword, requirePasswordConfirmation, comparePasswords ],
+	handleErrors(signUpForm),
 	async (req, res) => {
 		const errors = validationResult(req);
-		console.log(errors); //not able to enter password
 		const { email, password } = req.body;
-		//not creating another user
-		//not able to continue the signup process
-		if (!errors.isEmpty()) {
-			return res.send(signUpForm({ req, errors }));
-		}
 		const user = await usersRepo.create({ email, password });
 		console.log(user);
 		req.session.userId = user.id;
@@ -49,21 +45,11 @@ router.get('/signin', (req, res) => {
 	res.send(signInForm({}));
 });
 
-router.post(
-	'/signin',
-	[ validateEmail, validatePassword ], //since the email validator has validated the email hence the req.body.email = user.email ],
-	async (req, res) => {
-		const errors = validationResult(req);
-		const { email } = req.body;
-		console.log(errors);
-		const user = await usersRepo.getOneBy({ email });
-		if (!errors.isEmpty()) {
-			return res.send(signInForm({ errors }));
-		} else {
-			req.session.userId = user.id;
-			res.send('session started');
-		}
-	}
-);
+router.post('/signin', [ validateEmail, validatePassword ], handleErrors(signInForm), async (req, res) => {
+	const { email } = req.body;
+	const user = await usersRepo.getOneBy({ email });
+	req.session.userId = user.id;
+	res.send('session started');
+});
 
 module.exports = router;
