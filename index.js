@@ -1,7 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cookieSession = require('cookie-session');
-const authRouter = require('./Routes/admin/auth');
+const authRouter = require('./Routes/admin/auth/auth');
+const productsRouter = require('./Routes/admin/products');
 //cookieSession({keys}) is a middleware function
 const app = express();
 
@@ -15,6 +16,7 @@ app.use(
 	})
 );
 app.use(authRouter);
-app.listen(5000, () => {
+app.use(productsRouter);
+app.listen(3000, () => {
 	console.log('sup');
 });
