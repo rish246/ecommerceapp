@@ -6,18 +6,17 @@ const multer = require('multer');
 const { requireTitle, requirePrice } = require('../../Routes/admin/auth/validations');
 const productsRepo = require('../../repositories/products');
 const createProductTemplate = require('../../views/admin/products/createNewProduct');
-const { handleErrors } = require('../../views/admin/auth/middlewares');
+const { handleErrors, isSignedIn } = require('../../views/admin/auth/middlewares');
+const adminProductsTemplate = require('../../views/admin/products/adminProducts');
 
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() }); //store the file in the multer's memory storage
+router.use(isSignedIn()); //a middleware to check if the user is signed in or not
 
 router.get('/admin/products', async (req, res) => {
 	const products = await productsRepo.getAll();
-	for (let product of products) {
-		console.log(product.title);
-	}
+	res.send(adminProductsTemplate({ products }));
 });
-
 router.get('/admin/products/new', (req, res) => {
 	res.send(createProductTemplate({}));
 });
@@ -33,7 +32,7 @@ router.post(
 		const userId = req.session.userId;
 		console.log(userId);
 		await productsRepo.create({ title, price, image });
-		res.send('Product added to the list');
+		res.redirect('/admin/products');
 	}
 );
 module.exports = router;

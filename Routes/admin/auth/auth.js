@@ -1,5 +1,4 @@
 const express = require('express');
-const { body, check, validationResult } = require('express-validator');
 const {
 	requireEmail,
 	requirePassword,
@@ -27,12 +26,11 @@ router.post(
 	[ requireEmail, requirePassword, requirePasswordConfirmation, comparePasswords ],
 	handleErrors(signUpForm),
 	async (req, res) => {
-		const errors = validationResult(req);
 		const { email, password } = req.body;
 		const user = await usersRepo.create({ email, password });
 		console.log(user);
 		req.session.userId = user.id;
-		res.send('account created');
+		res.redirect('/admin/products');
 	}
 );
 
@@ -49,7 +47,8 @@ router.post('/signin', [ validateEmail, validatePassword ], handleErrors(signInF
 	const { email } = req.body;
 	const user = await usersRepo.getOneBy({ email });
 	req.session.userId = user.id;
-	res.send('session started');
+	res.redirect('/admin/products');
+	//for some reason it is not redirecting me to /admin/products
 });
 
 module.exports = router;
