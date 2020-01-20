@@ -2,7 +2,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cookieSession = require('cookie-session');
 const authRouter = require('./Routes/admin/auth/auth');
-const productsRouter = require('./Routes/admin/products');
+const adminProductsRouter = require('./Routes/admin/products');
+const userProductsRouter = require('./Routes/user/userfrontPage');
+const cartsRouter = require('./Routes/user/cart');
 //cookieSession({keys}) is a middleware function
 const app = express();
 
@@ -15,8 +17,14 @@ app.use(
 		keys: [ 'lskjflsjf' ]
 	})
 );
+
+app.use(userProductsRouter);
+
 app.use(authRouter);
-app.use(productsRouter);
-app.listen(3000, () => {
-	console.log('sup');
+app.use(adminProductsRouter);
+
+app.use(cartsRouter);
+
+app.listen(5000, () => {
+	console.log('Listening');
 });

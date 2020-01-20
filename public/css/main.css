@@ -138,6 +138,7 @@ body {
 
 .price {
 	margin: 0 20px;
+	display: inline;
 }
 
 .cart-right {

@@ -23,6 +23,7 @@ class mainRepository {
 		const fileData = await this.getAll();
 		fileData.push(attributes);
 		this.writeAll(fileData);
+		return attributes;
 	}
 
 	async writeAll(arr) {
