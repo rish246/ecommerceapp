@@ -12,6 +12,8 @@ Use the following commands to run this application in your system.
 1. `npm install`
 1. `npm run dev`
 
+**Then go to localhost:5001 in your browser**
+
 **In case if `npm run dev` does not work.. try reinstalling nodemon**
 `sudo npm install --dev nodemon`
 
