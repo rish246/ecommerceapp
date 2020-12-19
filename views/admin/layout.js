@@ -1,5 +1,5 @@
 module.exports = ({ content }) => {
-	//we can tell express to send any folder and not to send the other folder
+	
 	return `
     <!DOCTYPE html>
       <html lang="en">
@@ -21,6 +21,11 @@ module.exports = ({ content }) => {
                   <h3 class="title">Admin Panel</h3>
                 </a>
               </div>
+              <div>
+              <a href="/">
+                <h3 class="title">Home</h3>
+              </a>
+            </div>
               <div class="navbar-item">
                 <div class="navbar-buttons">
                   <div class="navbar-item">

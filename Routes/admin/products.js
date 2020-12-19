@@ -29,7 +29,10 @@ router.post(
 	[ requireTitle, requirePrice ],
 	handleErrors(createProductTemplate),
 	async (req, res) => {
-		const image = req.file.buffer.toString('base64');
+		let image = '';
+		if(req.file) {
+			image = req.file.buffer.toString('base64');
+		}
 		const { title, price } = req.body;
 		const userId = req.session.userId;
 		console.log(userId);
@@ -59,7 +62,8 @@ router.post(
 	async (req, res) => {
 		const changes = req.body;
 		//check for any potential upload of image
-		if (req.file) {
+		// why is this even running
+		if (req.file != undefined || req.file != null) {
 			changes.image = req.file.buffer.toString('base64');
 		}
 
